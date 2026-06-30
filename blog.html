@@ -42,6 +42,17 @@
             width: 100px;
             height: 100px;
         }
+        /* Blog page only - overlay to hide embedded page header */
+        .blog-iframe-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: linear-gradient(to bottom right, #f0fdf4, #ffffff, #fdf2f8);
+            pointer-events: none;
+            z-index: 10;
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-green-50 via-white to-pink-50 min-h-screen">
@@ -88,16 +99,20 @@
 
     <!-- Blog Content -->
     <main class="pt-16">
-        <iframe
-            src="https://megagangnam.com/author/tranlan/"
-            width="100%"
-            style="height: calc(100vh - 64px); border: none;"
-            loading="lazy"
-            title="Blog Trần Thị Lan"
-            id="blogIframe"
-            sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-            referrerpolicy="no-referrer"
-        ></iframe>
+        <div class="relative">
+            <iframe
+                src="https://megagangnam.com/author/tranlan/"
+                width="100%"
+                style="height: calc(100vh - 64px); border: none;"
+                loading="lazy"
+                title="Blog Trần Thị Lan"
+                id="blogIframe"
+                sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                referrerpolicy="no-referrer"
+            ></iframe>
+            <!-- Overlay to hide header of embedded page -->
+            <div id="iframeOverlay" class="blog-iframe-overlay"></div>
+        </div>
 
         <!-- Fallback if iframe is blocked -->
         <div id="iframeFallback" class="hidden items-center justify-center" style="height: calc(100vh - 64px);">
