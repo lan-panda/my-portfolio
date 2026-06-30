@@ -134,21 +134,11 @@
                                 Mở kênh →
                             </a>
                         </div>
-                        <!-- YouTube video list via RSS -->
+                        <!-- YouTube video list -->
                         <div id="youtubeLoading" class="text-center py-8">
                             <p class="text-gray-500">Đang tải video...</p>
                         </div>
-                        <div id="youtubeVideos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 hidden"></div>
-                        <div id="youtubeError" class="hidden text-center py-8">
-                            <p class="text-gray-600 mb-3">Không thể tải video. Xem trực tiếp trên YouTube:</p>
-                            <a href="https://youtube.com/@360sacdep" target="_blank" rel="noopener noreferrer"
-                               class="inline-flex items-center space-x-2 bg-red-600 text-white px-5 py-2.5 rounded-full hover:bg-red-700 transition">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                                </svg>
-                                <span>Mở kênh YouTube</span>
-                            </a>
-                        </div>
+                        <div id="youtubeVideos" class="grid grid-cols-2 md:grid-cols-3 gap-4 hidden"></div>
                     </div>
                 </div>
 
@@ -265,69 +255,39 @@
             showTab('youtube');
         });
 
-        // YouTube RSS Feed
-        const YT_CHANNEL_ID = 'UCTHDZvhxaG9nw2F9Ig2fxzQ';
-        const YT_RSS_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${YT_CHANNEL_ID}`;
-        const CORS_PROXY = `https://api.allorigins.win/raw?url=${encodeURIComponent(YT_RSS_URL)}`;
+        // YouTube Videos - hardcoded for stability
+        const ytVideos = [
+            { id: 'EnErIX5BEjM', title: 'Shorts #1' },
+            { id: '55Lt9OHffY8', title: 'Shorts #2' },
+            { id: 'EJIa7_1IajE', title: 'Shorts #3' },
+            { id: 'BPt0CaL5jps', title: 'Shorts #4' },
+            { id: 'pg-KIzvaxDM', title: 'Shorts #5' },
+            { id: 'IILy0Qd70Cc', title: 'Shorts #6' }
+        ];
 
-        async function loadYouTubeVideos() {
-            const loading = document.getElementById('youtubeLoading');
+        function renderYouTubeVideos() {
             const videosContainer = document.getElementById('youtubeVideos');
-            const errorDiv = document.getElementById('youtubeError');
+            const loading = document.getElementById('youtubeLoading');
 
-            try {
-                const response = await fetch(CORS_PROXY);
-                const xmlText = await response.text();
+            videosContainer.innerHTML = ytVideos.map(v => `
+                <a href="https://www.youtube.com/shorts/${v.id}" target="_blank" rel="noopener noreferrer"
+                   class="block bg-gray-50 rounded-lg overflow-hidden hover:shadow-md transition group">
+                    <div class="relative">
+                        <img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg" alt="${v.title}" class="w-full h-40 object-cover">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition flex items-center justify-center">
+                            <svg class="w-12 h-12 text-white opacity-0 group-hover:opacity-100 transition" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </a>
+            `).join('');
 
-                // Parse XML
-                const parser = new DOMParser();
-                const xml = parser.parseFromString(xmlText, 'text/xml');
-                const entries = xml.querySelectorAll('entry');
-
-                if (!entries || entries.length === 0) {
-                    throw new Error('No videos found');
-                }
-
-                // Render videos
-                const videos = Array.from(entries).slice(0, 9).map(entry => {
-                    const title = entry.querySelector('title')?.textContent || '';
-                    const link = entry.querySelector('link')?.getAttribute('href') || '';
-                    const videoId = link.match(/[?&]v=([^&]+)/)?.[1] || link.split('/').pop();
-                    const thumbnail = `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
-                    const pubDate = new Date(entry.querySelector('published')?.textContent).toLocaleDateString('vi-VN');
-
-                    return `
-                        <a href="${link}" target="_blank" rel="noopener noreferrer"
-                           class="block bg-gray-50 rounded-lg overflow-hidden hover:shadow-md transition group">
-                            <div class="relative">
-                                <img src="${thumbnail}" alt="${title}" class="w-full h-40 object-cover">
-                                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition flex items-center justify-center">
-                                    <svg class="w-12 h-12 text-white opacity-0 group-hover:opacity-100 transition" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="p-3">
-                                <h3 class="text-sm font-medium text-gray-800 line-clamp-2 mb-1">${title}</h3>
-                                <p class="text-xs text-gray-500">${pubDate}</p>
-                            </div>
-                        </a>
-                    `;
-                }).join('');
-
-                videosContainer.innerHTML = videos;
-                loading.classList.add('hidden');
-                videosContainer.classList.remove('hidden');
-
-            } catch (error) {
-                console.error('YouTube RSS error:', error);
-                loading.classList.add('hidden');
-                errorDiv.classList.remove('hidden');
-            }
+            loading.classList.add('hidden');
+            videosContainer.classList.remove('hidden');
         }
 
-        // Load YouTube videos on init
-        loadYouTubeVideos();
+        renderYouTubeVideos();
     </script>
 </body>
 </html>
