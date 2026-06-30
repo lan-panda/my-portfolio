@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Blog — Trần Thị Lan</title>
+    <meta name="description" content="Blog của Trần Thị Lan — SEO Content Specialist">
+
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'flower-pink': '#FFB6C1',
+                        'flower-green': '#90EE90',
+                        'flower-purple': '#DDA0DD',
+                        'flower-yellow': '#FFE4B5',
+                        'leaf-green': '#228B22',
+                        'soil-brown': '#8B4513'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        .petal {
+            background: linear-gradient(135deg, #FFB6C1 0%, #FFC0CB 100%);
+            border-radius: 0 100% 0 100%;
+            position: absolute;
+        }
+        .flower-container {
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-green-50 via-white to-pink-50 min-h-screen">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/80 backdrop-blur-md shadow-sm z-50">
+        <div class="container mx-auto px-6 py-2">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <div class="flower-container scale-50 -ml-4">
+                        <div class="petal w-8 h-8"></div>
+                        <div class="petal w-8 h-8"></div>
+                        <div class="petal w-8 h-8"></div>
+                        <div class="petal w-8 h-8"></div>
+                        <div class="petal w-8 h-8"></div>
+                        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-flower-yellow rounded-full"></div>
+                    </div>
+                    <span class="text-xl font-bold text-leaf-green">Trần Thị Lan</span>
+                </div>
+                <ul class="hidden md:flex space-x-8">
+                    <li><a href="index.html" class="text-gray-700 hover:text-leaf-green transition">Trang chủ</a></li>
+                    <li><a href="index.html#about" class="text-gray-700 hover:text-leaf-green transition">Giới thiệu</a></li>
+                    <li><a href="blog.html" class="text-leaf-green font-semibold transition">Blog</a></li>
+                    <li><a href="social.html" class="text-gray-700 hover:text-leaf-green transition">Social</a></li>
+                    <li><a href="index.html#contact" class="text-gray-700 hover:text-leaf-green transition">Liên hệ</a></li>
+                </ul>
+                <button class="md:hidden text-gray-700" onclick="toggleMobileMenu()">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="mobileMenu" class="hidden md:hidden mt-4">
+                <ul class="space-y-2">
+                    <li><a href="index.html" class="block py-2 text-gray-700 hover:text-leaf-green transition">Trang chủ</a></li>
+                    <li><a href="index.html#about" class="block py-2 text-gray-700 hover:text-leaf-green transition">Giới thiệu</a></li>
+                    <li><a href="blog.html" class="block py-2 text-leaf-green font-semibold transition">Blog</a></li>
+                    <li><a href="social.html" class="block py-2 text-gray-700 hover:text-leaf-green transition">Social</a></li>
+                    <li><a href="index.html#contact" class="block py-2 text-gray-700 hover:text-leaf-green transition">Liên hệ</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Blog Content -->
+    <main class="pt-16">
+        <iframe
+            src="https://megagangnam.com/author/tranlan/"
+            width="100%"
+            style="height: calc(100vh - 64px); border: none;"
+            loading="lazy"
+            title="Blog Trần Thị Lan"
+            id="blogIframe"
+            sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+            referrerpolicy="no-referrer"
+        ></iframe>
+
+        <!-- Fallback if iframe is blocked -->
+        <div id="iframeFallback" class="hidden items-center justify-center" style="height: calc(100vh - 64px);">
+            <div class="text-center p-8">
+                <p class="text-gray-600 mb-4">Không thể nhúng nội dung. Vui lòng mở trang blog trong tab mới.</p>
+                <a href="https://megagangnam.com/author/tranlan/" target="_blank" rel="noopener noreferrer"
+                   class="inline-block bg-leaf-green text-white px-6 py-3 rounded-full hover:bg-green-700 transition">
+                    Mở Blog trong tab mới
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-4 bg-gradient-to-t from-green-100 to-transparent">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-gray-600">Made with 🌸 by Trần Thị Lan</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('mobileMenu').classList.add('hidden');
+            });
+        });
+
+        // Suppress cross-origin errors from iframe content
+        window.addEventListener('error', function(e) {
+            // Ignore errors originating from the iframe
+            if (e.filename && e.filename.includes('megagangnam')) {
+                e.preventDefault();
+                return true;
+            }
+        });
+
+        window.addEventListener('unhandledrejection', function(e) {
+            e.preventDefault();
+            return true;
+        });
+
+        // Show fallback only if iframe fails to load entirely
+        const iframe = document.getElementById('blogIframe');
+        const fallback = document.getElementById('iframeFallback');
+
+        iframe.addEventListener('load', () => {
+            // iframe loaded successfully (even if internal requests fail, that's OK)
+        });
+
+        iframe.addEventListener('error', () => {
+            // Only show fallback if iframe itself fails to load
+            iframe.classList.add('hidden');
+            fallback.classList.remove('hidden');
+            fallback.classList.add('flex');
+        });
+    </script>
+</body>
+</html>
